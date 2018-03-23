@@ -15,11 +15,11 @@ A .Net Standard library parser for the Qif format
 
 ### Usage
     
-    ```
+    ```csharp
     ITransactionService service = new QifService();
     ITransactionDetail result = service.QueryFromFile<NonInvestmentTransaction>(_path + "/export.qif");
     ```
-    
+
     For more information check the unit test project folder.
 
 ### Test
