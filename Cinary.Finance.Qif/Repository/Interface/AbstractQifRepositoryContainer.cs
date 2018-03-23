@@ -8,13 +8,13 @@ namespace Cinary.Finance.Qif.Repository
 {
     public abstract class AbstractQifRepositoryContainer : ITransactionRepositoryContainer
     {
-        protected static Dictionary<string, ITransactionRepository> _container = new Dictionary<string, ITransactionRepository>();
+        protected static Dictionary<string, AbstractTransactionRepository> _container = new Dictionary<string, AbstractTransactionRepository>();
 
-        public ITransactionRepository Resolve(Type transactionType)
+        public AbstractTransactionRepository Resolve(Type transactionType)
         {
             string resourceNameRepo = transactionType.Name.Replace("Model", "").Replace("Resource", "") + "Repository";
 
-            ITransactionRepository result = default(ITransactionRepository);
+            AbstractTransactionRepository result = default(AbstractTransactionRepository);
             if (_container.ContainsKey(resourceNameRepo))
             {
                 result = _container[resourceNameRepo];
@@ -32,7 +32,7 @@ namespace Cinary.Finance.Qif.Repository
 
                 try
                 {
-                    result = (ITransactionRepository) Activator.CreateInstance(repoClass.AsType());
+                    result = (AbstractTransactionRepository) Activator.CreateInstance(repoClass.AsType());
                 }
                 catch (Exception err)
                 {
@@ -44,7 +44,7 @@ namespace Cinary.Finance.Qif.Repository
             return result;
         }
 
-        public ITransactionRepository<TTarget> Resolve<TTarget>() where TTarget : ITransaction => Resolve(typeof(TTarget)) as ITransactionRepository<TTarget>;
+        public AbstractTransactionRepository Resolve<TTarget>() where TTarget : ITransaction => Resolve(typeof(TTarget));
 
         public void Dispose()
         {

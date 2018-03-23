@@ -1,6 +1,7 @@
 using Cinary.Finance.Qif.Data;
-using Cinary.Finance.Qif.Data.Model;
 using Cinary.Finance.Qif.Service;
+using Cinary.Finance.Qif.Transaction;
+using Cinary.Finance.Qif.TransactionTypes;
 using System;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,7 +23,7 @@ namespace Cinary.Finance.Qif.Test
         public void StartTest()
         {
             ITransactionService service = new QifService();
-            var result = service.Query<QifModel>(_path + "/export.qif");
+            ITransactionDetail result = service.QueryFromFile<NonInvestmentTransaction>(_path + "/export.qif");
 
             foreach (var transaction in result.Categories)
             {

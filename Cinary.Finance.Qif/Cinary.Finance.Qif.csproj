@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Ahmet Cavus</Authors>
+    <Company>Cinary</Company>
+    <Description>A Qif Reader for the .Net Standard library</Description>
+    <PackageLicenseUrl>https://github.com/AhmetCavus/Qif.Reader/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AhmetCavus/Qif.Reader</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AhmetCavus/Qif.Reader.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Finance Qif Reader Parser</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Locator\Implementation\" />
+    <Folder Include="Locator\Interface\" />
+  </ItemGroup>
 
 </Project>
