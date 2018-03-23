@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Cinary.Finance.Qif.Data;
-using Cinary.Finance.Qif.Data.TransactionMapping;
 using Cinary.Finance.Qif.TransactionMapping;
 
 namespace Cinary.Finance.Qif
