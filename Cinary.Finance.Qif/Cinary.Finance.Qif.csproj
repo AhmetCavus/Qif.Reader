@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/AhmetCavus/Qif.Reader.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Finance Qif Reader Parser</PackageTags>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
