@@ -12,7 +12,7 @@ using Cinary.Finance.Qif.Repository;
 using Cinary.Finance.Qif.Service;
 using Cinary.Finance.Qif.Transaction;
 
-namespace Cinary.Finance.Qif.Data
+namespace Cinary.Finance.Qif
 {
     public class QifService : ITransactionService
     {
