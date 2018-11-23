@@ -23,15 +23,11 @@ namespace Cinary.Finance.Qif.Test
         public void StartTest()
         {
             ITransactionService service = new QifService();
-            ITransactionDetail result = service.QueryFromFile<NonInvestmentTransaction>(_path + "/export.qif");
+            var transactions = service.QueryFromFile<NonInvestmentTransaction>(_path + "/export.qif");
 
-            foreach (var transaction in result.Categories)
+            foreach (var transaction in transactions)
             {
-                Output.WriteLine($"{transaction.Id}, {transaction.Title}, {transaction.Type}");
-                foreach (var category in transaction.TransactionGroups)
-                {
-                    Output.WriteLine($"\t - {category.Title}, {category.ShortName}, {category.Detail}");
-                }
+                Output.WriteLine($"{transaction.Id}, {transaction.Category}, {transaction.Type}");
             }
         }
     }

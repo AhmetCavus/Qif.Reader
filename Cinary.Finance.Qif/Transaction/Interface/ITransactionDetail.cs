@@ -2,7 +2,7 @@
 
 namespace Cinary.Finance.Qif.Transaction
 {
-    public interface ITransactionDetail : ITransaction
+    public interface ITransactionGroup : ITransactionEntry
     {
         long TimeStamp { get; set; }
         IList<ICategory> Categories { get; set; }

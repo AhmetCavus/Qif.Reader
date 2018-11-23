@@ -6,6 +6,6 @@ namespace Cinary.Finance.Qif.Transaction
     {
         string Name { get; set; }
         string Address { get; set; }
-        IList<ITransactionDetail> Transactions { get; set; }
+        IList<ITransactionGroup> Transactions { get; set; }
     }
 }

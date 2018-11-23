@@ -1,4 +1,5 @@
 ﻿using Cinary.Finance.Qif.Service;
+using Cinary.Finance.Qif.Transaction;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -9,35 +10,35 @@ namespace Cinary.Finance.Qif
 {
     public class QifReader : ITransactionReader
     {
-        public async Task<IList<TTarget>> ReadFromResourceAsync<TTarget>(string resource) where TTarget : ITransaction
+        public async Task<IList<ITransactionEntry>> ReadFromResourceAsync<TTarget>(string resource) where TTarget : ITransactionEntry
         {
             var assembly = GetType().GetTypeInfo().Assembly;
             Stream stream = assembly.GetManifestResourceStream(resource);
             return await ReadAsync<TTarget>(stream);
         }
 
-        public IList<TTarget> ReadFromResource<TTarget>(string resource) where TTarget : ITransaction
+        public IList<ITransactionEntry> ReadFromResource<TTarget>(string resource) where TTarget : ITransactionEntry
         {
             var assembly = GetType().GetTypeInfo().Assembly;
             Stream stream = assembly.GetManifestResourceStream(resource);
             return Read<TTarget>(stream);
         }
 
-        public async Task<IList<TTarget>> ReadFromFileAsync<TTarget>(string resource) where TTarget : ITransaction
+        public async Task<IList<ITransactionEntry>> ReadFromFileAsync<TTarget>(string resource) where TTarget : ITransactionEntry
         {
             Stream stream = File.OpenRead(resource);
             return await ReadAsync<TTarget>(stream);
         }
 
-        public IList<TTarget> ReadFromFile<TTarget>(string resource) where TTarget : ITransaction
+        public IList<ITransactionEntry> ReadFromFile<TTarget>(string resource) where TTarget : ITransactionEntry
         {
             Stream stream = File.OpenRead(resource);
             return Read<TTarget>(stream);
         }
 
-        public async Task<IList<TTarget>> ReadAsync<TTarget>(Stream resource) where TTarget : ITransaction
+        public async Task<IList<ITransactionEntry>> ReadAsync<TTarget>(Stream resource) where TTarget : ITransactionEntry
         {
-            List<TTarget> transactions;
+            IList<ITransactionEntry> transactions;
             using (StreamReader reader = new StreamReader(resource, Encoding.GetEncoding("iso-8859-1"), true))
             {
                 QifStream qif = new QifStream(reader);
@@ -46,9 +47,9 @@ namespace Cinary.Finance.Qif
             return transactions;
         }
 
-        public IList<TTarget> Read<TTarget>(Stream resource) where TTarget : ITransaction
+        public IList<ITransactionEntry> Read<TTarget>(Stream resource) where TTarget : ITransactionEntry
         {
-            List<TTarget> transactions;
+            IList<ITransactionEntry> transactions;
             using (StreamReader reader = new StreamReader(resource, Encoding.GetEncoding("iso-8859-1"), true))
             {
                 QifStream qif = new QifStream(reader);

@@ -6,6 +6,7 @@
 //
 //  Copyright (c) 2017 (c) Ahmet Cavus
 using Cinary.Finance.Qif.Transaction;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Cinary.Finance.Qif.Repository
@@ -15,8 +16,8 @@ namespace Cinary.Finance.Qif.Repository
     /// </summary>
     public interface ITransactionStreamRepository
     {
-        Task<ITransactionDetail> ResolveAsync(string id, System.IO.Stream resource);
-        ITransactionDetail Resolve(string id, System.IO.Stream resource);
+        Task<IList<ITransactionEntry>> ResolveAsync(string id, System.IO.Stream resource);
+        IList<ITransactionEntry> Resolve(string id, System.IO.Stream resource);
     }
 
 }

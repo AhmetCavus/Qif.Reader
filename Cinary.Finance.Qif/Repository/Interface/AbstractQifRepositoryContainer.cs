@@ -1,4 +1,5 @@
 ﻿using Cinary.Finance.Qif.Data;
+using Cinary.Finance.Qif.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Cinary.Finance.Qif.Repository
             return result;
         }
 
-        public AbstractTransactionRepository Resolve<TTarget>() where TTarget : ITransaction => Resolve(typeof(TTarget));
+        public AbstractTransactionRepository Resolve<TTarget>() where TTarget : ITransactionEntry => Resolve(typeof(TTarget));
 
         public void Dispose()
         {

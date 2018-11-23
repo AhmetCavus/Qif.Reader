@@ -42,15 +42,6 @@ namespace Cinary.Finance.Qif.Repository
 
         #region Protected / Private Methods
 
-        protected override ITransactionDetail OnCreate(string id, IList<NonInvestmentTransaction> transactions)
-        {
-            ITransactionDetail result = default(ITransactionDetail);
-            var data = new TransactionDto<NonInvestmentTransaction>() { Transactions = transactions };
-            result = _modifier.Modify(data);
-            _container[id] = result;
-            return result;
-        }
-
         #endregion
     }
 }

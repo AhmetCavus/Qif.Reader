@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Cinary.Finance.Qif.Modifier
 {
-    public abstract class TransactionModifier<TTransaction> : AbstractModifier<TransactionDto<TTransaction>, ITransactionDetail> where TTransaction : ITransaction
+    public abstract class TransactionModifier<TTransaction> : AbstractModifier<TransactionDto<TTransaction>, ITransactionGroup> where TTransaction : ITransactionEntry
     {
-        public override abstract ITransactionDetail Modify(params TransactionDto<TTransaction>[] parameters);
+        public override abstract ITransactionGroup Modify(params TransactionDto<TTransaction>[] parameters);
 
         protected void FillCategory(ICategory cat, string data)
         {

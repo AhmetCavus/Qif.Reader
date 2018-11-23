@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Cinary.Finance.Qif.Transaction;
 using Cinary.Finance.Qif.TransactionMapping;
 
 namespace Cinary.Finance.Qif
@@ -17,7 +18,7 @@ namespace Cinary.Finance.Qif
             _in = stream;
         }
 
-        public List<T> ReadTransactions<T>() where T : ITransaction
+        public IList<ITransactionEntry> ReadTransactions<T>() where T : ITransactionEntry
         {
             // Go to start
             _in.BaseStream.Position = 0;
@@ -40,7 +41,7 @@ namespace Cinary.Finance.Qif
             _in.BaseStream.Position = 1;
 
             // dummy proof
-            var transactions = new List<T>();
+            var transactions = new List<ITransactionEntry>();
 
             // Use convention to find the mapper
             var mapperName = typeof(T).Name + "Map";
@@ -73,7 +74,7 @@ namespace Cinary.Finance.Qif
             return transactions;
         }
 
-        public async Task<List<T>> ReadTransactionsAsync<T>() where T : ITransaction
+        public async Task<IList<ITransactionEntry>> ReadTransactionsAsync<T>() where T : ITransactionEntry
         {
             // Go to start
             _in.BaseStream.Position = 0;
@@ -97,12 +98,12 @@ namespace Cinary.Finance.Qif
 
 
             // dummy proof
-            var transactions = new List<T>();
+            var transactions = new List<ITransactionEntry>();
 
             // Use convention to find the mapper
             var mapperName = typeof(T).Name + "Map";
             var assembly = GetType().GetTypeInfo().Assembly;
-            var toFind = $"{GetType().Namespace}.TransactionMapping.{mapperName}";
+            var toFind = $"{GetType().Namespace}.Data.TransactionMapping.{mapperName}";
             var mapperClass = (from item in assembly.DefinedTypes
                                where item.FullName == toFind
                                select item).FirstOrDefault();

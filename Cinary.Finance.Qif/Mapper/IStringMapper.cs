@@ -1,6 +1,8 @@
-﻿namespace Cinary.Finance.Qif.Mapper
+﻿using Cinary.Finance.Qif.Transaction;
+
+namespace Cinary.Finance.Qif.Mapper
 {
-    interface IStringMapper<T> where T : ITransaction
+    interface IStringMapper<T> where T : ITransactionEntry
     {
         //void addAttribute(char key, string propertyName);
         //TransactionAttribute getAttribute(char key);

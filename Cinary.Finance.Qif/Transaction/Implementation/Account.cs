@@ -6,11 +6,11 @@ namespace Cinary.Finance.Qif.Transaction
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public IList<ITransactionDetail> Transactions { get; set; }
+        public IList<ITransactionGroup> Transactions { get; set; }
 
         public Account()
         {
-            Transactions = new List<ITransactionDetail>();
+            Transactions = new List<ITransactionGroup>();
         }
     }
 }

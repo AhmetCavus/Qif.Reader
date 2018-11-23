@@ -6,6 +6,7 @@
 //
 //  Copyright (c) 2017 (c) Ahmet Cavus
 
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Cinary.Finance.Qif.Repository;
@@ -19,8 +20,8 @@ namespace Cinary.Finance.Qif
         protected QifReader _qifReader = new QifReader();
         protected QifRepositoryContainer _qifRepoLocator = new QifRepositoryContainer();
 
-        public async Task<ITransactionDetail> QueryAsync<TTarget>(string id, Stream resource)
-        where TTarget : class, ITransaction
+        public async Task<IList<ITransactionEntry>> QueryAsync<TTarget>(string id, Stream resource)
+        where TTarget : class, ITransactionEntry
         {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);
@@ -28,8 +29,8 @@ namespace Cinary.Finance.Qif
             return target;
         }
 
-        public ITransactionDetail Query<TTarget>(string id, Stream resource)
-        where TTarget : class, ITransaction
+        public IList<ITransactionEntry> Query<TTarget>(string id, Stream resource)
+        where TTarget : class, ITransactionEntry
         {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);
@@ -37,8 +38,8 @@ namespace Cinary.Finance.Qif
             return target;
         }
 
-        public async Task<ITransactionDetail> QueryFromFileAsync<TTarget>(string path)
-        where TTarget : class, ITransaction
+        public async Task<IList<ITransactionEntry>> QueryFromFileAsync<TTarget>(string path)
+        where TTarget : class, ITransactionEntry
         {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);
@@ -46,8 +47,8 @@ namespace Cinary.Finance.Qif
             return target;
         }
 
-        public ITransactionDetail QueryFromFile<TTarget>(string path)
-        where TTarget : class, ITransaction
+        public IList<ITransactionEntry> QueryFromFile<TTarget>(string path)
+        where TTarget : class, ITransactionEntry
         {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);
@@ -55,17 +56,17 @@ namespace Cinary.Finance.Qif
             return target;
         }
 
-       public async Task<ITransactionDetail> QueryFromResourceAsync<TTarget>(string resource)
-       where TTarget : class, ITransaction
-       {
+       public async Task<IList<ITransactionEntry>> QueryFromResourceAsync<TTarget>(string resource)
+       where TTarget : class, ITransactionEntry
+        {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);
             var target = await repo.ResolveFromResourceAsync(resource);
             return target;
         }
 
-        public ITransactionDetail QueryFromResource<TTarget>(string resource)
-        where TTarget : class, ITransaction
+        public IList<ITransactionEntry> QueryFromResource<TTarget>(string resource)
+        where TTarget : class, ITransactionEntry
         {
             var repo = _qifRepoLocator.Resolve<TTarget>();
             repo.SetTransactionReader(_qifReader);

@@ -1,4 +1,5 @@
 ﻿using Cinary.Finance.Qif.Data;
+using Cinary.Finance.Qif.Transaction;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,16 +7,16 @@ namespace Cinary.Finance.Qif.Service
 {
     public interface ITransactionReader
     {
-        Task<IList<TType>> ReadFromResourceAsync<TType>(string resource) where TType : ITransaction;
+        Task<IList<ITransactionEntry>> ReadFromResourceAsync<TType>(string resource) where TType : ITransactionEntry;
 
-        IList<TType> ReadFromResource<TType>(string resource) where TType : ITransaction;
+        IList<ITransactionEntry> ReadFromResource<TType>(string resource) where TType : ITransactionEntry;
 
-        Task<IList<TType>> ReadFromFileAsync<TType>(string resource) where TType : ITransaction;
+        Task<IList<ITransactionEntry>> ReadFromFileAsync<TType>(string resource) where TType : ITransactionEntry;
 
-        IList<TType> ReadFromFile<TType>(string resource) where TType : ITransaction;
+        IList<ITransactionEntry> ReadFromFile<TType>(string resource) where TType : ITransactionEntry;
 
-        Task<IList<TType>> ReadAsync<TType>(System.IO.Stream resource) where TType : ITransaction;
+        Task<IList<ITransactionEntry>> ReadAsync<TType>(System.IO.Stream resource) where TType : ITransactionEntry;
 
-        IList<TType> Read<TType>(System.IO.Stream resource) where TType : ITransaction;
+        IList<ITransactionEntry> Read<TType>(System.IO.Stream resource) where TType : ITransactionEntry;
     }
 }

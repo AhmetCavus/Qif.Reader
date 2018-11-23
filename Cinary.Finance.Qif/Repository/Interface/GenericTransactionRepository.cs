@@ -6,76 +6,70 @@ using System.Threading.Tasks;
 namespace Cinary.Finance.Qif.Repository
 {
     public abstract class GenericTransactionRepository<TTransaction> : AbstractTransactionRepository
-    where TTransaction : class, ITransaction
+    where TTransaction : class, ITransactionEntry
     {
-        public async override Task<ITransactionDetail> ResolveAsync(string id, Stream resource)
+        public async override Task<IList<ITransactionEntry>> ResolveAsync(string id, Stream resource)
         {
-            var list = await _reader.ReadAsync<TTransaction>(resource);
-            return OnCreate(id, list);
+            return await _reader.ReadAsync<TTransaction>(resource);
         }
 
-        public override ITransactionDetail Resolve(string id, Stream resource)
+        public override IList<ITransactionEntry> Resolve(string id, Stream resource)
         {
-            var list = _reader.Read<TTransaction>(resource);
-            return OnCreate(id, list);
+            return _reader.Read<TTransaction>(resource);
         }
 
-        public async override Task<ITransactionDetail> ResolveFromResourceAsync(string path)
+        public async override Task<IList<ITransactionEntry>> ResolveFromResourceAsync(string path)
         {
-            ITransactionDetail result = default(ITransactionDetail);
+            IList<ITransactionEntry> result = default(IList<ITransactionEntry>);
             if (_container.ContainsKey(path))
             {
                 result = _container[path];
             }
             else
             {
-                var transactions = await _reader.ReadFromResourceAsync<TTransaction>(path);
-                result = OnCreate(path, transactions);
+                result = await _reader.ReadFromResourceAsync<TTransaction>(path);
             }
             return result;
         }
 
-        public override ITransactionDetail ResolveFromResource(string path)
+        public override IList<ITransactionEntry> ResolveFromResource(string path)
         {
-            ITransactionDetail result = default(ITransactionDetail);
+            IList<ITransactionEntry> result = default(IList<ITransactionEntry>);
             if (_container.ContainsKey(path))
             {
                 result = _container[path];
             }
             else
             {
-                var transactions = _reader.ReadFromResource<TTransaction>(path);
-                result = OnCreate(path, transactions);
+                result = _reader.ReadFromResource<TTransaction>(path);
             }
             return result;
         }
 
-        public async override Task<ITransactionDetail> ResolveFromFileAsync(string path)
+        public async override Task<IList<ITransactionEntry>> ResolveFromFileAsync(string path)
         {
-            ITransactionDetail result = default(ITransactionDetail);
+            IList<ITransactionEntry> result = default(IList<ITransactionEntry>);
             if (_container.ContainsKey(path))
             {
                 result = _container[path];
             }
             else
             {
-                var transactions = await _reader.ReadFromFileAsync<TTransaction>(path);
-                result = OnCreate(path, transactions);
+                result = await _reader.ReadFromFileAsync<TTransaction>(path);
             }
             return result;
         }
 
-        public override ITransactionDetail ResolveFromFile(string path)
+        public override IList<ITransactionEntry> ResolveFromFile(string path)
         {
-            ITransactionDetail result = default(ITransactionDetail);
+            IList<ITransactionEntry> result = default(IList<ITransactionEntry>);
             if (_container.ContainsKey(path))
             {
                 result = _container[path];
             }
             else
             {
-                var transactions = _reader.ReadFromFile<TTransaction>(path);
-                result = OnCreate(path, transactions);
+                result = _reader.ReadFromFile<TTransaction>(path);
             }
             return result;
         }
@@ -84,6 +78,5 @@ namespace Cinary.Finance.Qif.Repository
         {
         }
 
-        protected abstract ITransactionDetail OnCreate(string id, IList<TTransaction> transactions);
     }
 }

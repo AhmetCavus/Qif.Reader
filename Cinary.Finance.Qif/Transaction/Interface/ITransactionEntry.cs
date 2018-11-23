@@ -19,9 +19,9 @@ namespace Cinary.Finance.Qif.Transaction
         string Category { get; set; }
         IList<string> SplitCategory { get; set; }
         string Type { get; set; }
-        string Address { get; set; }
-        string Payee { get; set; }
-        string PayeeAccount { get; set; }
-        string PayeeName { get; set; }
+        string Address { get; }
+        string Payee { get; }
+        string PayeeAccount { get; }
+        string PayeeName { get; }
     }
 }

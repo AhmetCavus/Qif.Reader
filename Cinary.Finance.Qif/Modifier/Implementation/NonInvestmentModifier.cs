@@ -9,7 +9,7 @@ namespace Cinary.Finance.Qif.Data.Modifier.Implementation
 {
     public class NonInvestmentModifier : TransactionModifier<NonInvestmentTransaction>
     {
-        public override ITransactionDetail Modify(params TransactionDto<NonInvestmentTransaction>[] parameters)
+        public override ITransactionGroup Modify(params TransactionDto<NonInvestmentTransaction>[] parameters)
         {
             if (parameters == null || parameters.Length <= 0) throw new ArgumentNullException("No parameters given");
             var dto = parameters[0];

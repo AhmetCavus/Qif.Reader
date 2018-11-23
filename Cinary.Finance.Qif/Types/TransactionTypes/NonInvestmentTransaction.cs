@@ -1,19 +1,14 @@
-﻿using System;
+﻿using Cinary.Finance.Qif.Transaction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Cinary.Finance.Qif.TransactionTypes
 {
-    public class NonInvestmentTransaction : ITransaction
+    public class NonInvestmentTransaction : ITransactionEntry
     {
-        public NonInvestmentTransaction()
-        {
-            this.PayeeLines = new List<string>();
-            this.AddressLines = new List<string>();
-            this.SplitMemo = new List<string>(); ;
-            this.SplitCategory = new List<string>(); ;
-            this.SplitAmount = new List<decimal>();
-        }
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
         public IList<decimal> SplitAmount { get; set; }
@@ -30,7 +25,17 @@ namespace Cinary.Finance.Qif.TransactionTypes
         public string Address { get { return string.Join(" ", AddressLines.ToArray()); } }
         //public string Payee { get { return string.Join(" ", Payee); } }
         public string Payee { get; }
-        public string PayeeAccount { get { return PayeeLines.Count>0? PayeeLines[0]:string.Empty;} }
+        public string PayeeAccount { get { return PayeeLines.Count > 0 ? PayeeLines[0] : string.Empty; } }
         public string PayeeName { get { return PayeeLines.Count > 1 ? PayeeLines[1] : string.Empty; } }
+
+        public NonInvestmentTransaction()
+        {
+            this.PayeeLines = new List<string>();
+            this.AddressLines = new List<string>();
+            this.SplitMemo = new List<string>(); ;
+            this.SplitCategory = new List<string>(); ;
+            this.SplitAmount = new List<decimal>();
+        }
+
     }
 }

@@ -7,6 +7,7 @@
 //  Copyright (c) 2017 (c) Ahmet Cavus
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Cinary.Finance.Qif.Transaction;
@@ -19,17 +20,17 @@ namespace Cinary.Finance.Qif.Service
 
         //ITransactionDetail Query<TTarget>(IDataDescription description = null) where TTarget : class, ITransaction;
 
-        Task<ITransactionDetail> QueryAsync<TTarget>(string id, Stream resource) where TTarget : class, ITransaction;
+        Task<IList<ITransactionEntry>> QueryAsync<TTarget>(string id, Stream resource) where TTarget : class, ITransactionEntry;
 
-        ITransactionDetail Query<TTarget>(string id, Stream resource) where TTarget : class, ITransaction;
+        IList<ITransactionEntry> Query<TTarget>(string id, Stream resource) where TTarget : class, ITransactionEntry;
 
-        Task<ITransactionDetail> QueryFromFileAsync<TTarget>(string path) where TTarget : class, ITransaction;
+        Task<IList<ITransactionEntry>> QueryFromFileAsync<TTarget>(string path) where TTarget : class, ITransactionEntry;
 
-        ITransactionDetail QueryFromFile<TTarget>(string path) where TTarget : class, ITransaction;
+        IList<ITransactionEntry> QueryFromFile<TTarget>(string path) where TTarget : class, ITransactionEntry;
 
-        Task<ITransactionDetail> QueryFromResourceAsync<TTarget>(string resource) where TTarget : class, ITransaction;
+        Task<IList<ITransactionEntry>> QueryFromResourceAsync<TTarget>(string resource) where TTarget : class, ITransactionEntry;
 
-        ITransactionDetail QueryFromResource<TTarget>(string resource) where TTarget : class, ITransaction;
+        IList<ITransactionEntry> QueryFromResource<TTarget>(string resource) where TTarget : class, ITransactionEntry;
 
     }
 }

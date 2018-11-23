@@ -1,4 +1,5 @@
 ﻿using Cinary.Finance.Qif.Mapper;
+using Cinary.Finance.Qif.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Reflection;
 
 namespace Cinary.Finance.Qif.TransactionMapping
 {
-    internal class TransactionMap<T> :  IStringMapper<T> where T : ITransaction
+    internal class TransactionMap<T> :  IStringMapper<T> where T : ITransactionEntry
     {
         private IList<TransactionAttribute> _attributes;
 
@@ -27,7 +28,7 @@ namespace Cinary.Finance.Qif.TransactionMapping
             return _attributes.Where(p => p.Key == key).FirstOrDefault();
         }
 
-        public T1 Parse<T1>(string transactionString) where T1 : ITransaction
+        public T1 Parse<T1>(string transactionString) where T1 : ITransactionEntry
         {
             var transaction = (T1)Activator.CreateInstance(typeof(T1));
 

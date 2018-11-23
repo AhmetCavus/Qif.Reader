@@ -9,14 +9,14 @@ namespace Cinary.Finance.Qif.Repository
     public abstract class AbstractTransactionRepository : ITransactionStreamRepository, ITransactionResourceRepository, ITransactionFileRepository
     {
         protected ITransactionReader _reader;
-        protected Dictionary<string, ITransactionDetail> _container = new Dictionary<string, ITransactionDetail>();
+        protected Dictionary<string, IList<ITransactionEntry>> _container = new Dictionary<string, IList<ITransactionEntry>>();
 
-        public abstract ITransactionDetail Resolve(string id, Stream resource);
-        public abstract Task<ITransactionDetail> ResolveAsync(string id, Stream resource);
-        public abstract ITransactionDetail ResolveFromFile(string path);
-        public abstract Task<ITransactionDetail> ResolveFromFileAsync(string path);
-        public abstract ITransactionDetail ResolveFromResource(string path);
-        public abstract Task<ITransactionDetail> ResolveFromResourceAsync(string path);
+        public abstract IList<ITransactionEntry> Resolve(string id, Stream resource);
+        public abstract Task<IList<ITransactionEntry>> ResolveAsync(string id, Stream resource);
+        public abstract IList<ITransactionEntry> ResolveFromFile(string path);
+        public abstract Task<IList<ITransactionEntry>> ResolveFromFileAsync(string path);
+        public abstract IList<ITransactionEntry> ResolveFromResource(string path);
+        public abstract Task<IList<ITransactionEntry>> ResolveFromResourceAsync(string path);
 
         public void SetTransactionReader(ITransactionReader reader) => _reader = reader;
 
