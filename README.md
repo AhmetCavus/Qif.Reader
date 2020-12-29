@@ -1,6 +1,6 @@
 # Qif.Reader
 
-A .Net Standard library parser for the Qif format
+This .Net Standart library provides parsing QIF files and streams.
 
 ## Getting Started
 
@@ -16,16 +16,18 @@ A .Net Standard library parser for the Qif format
 ### Usage
     
 ```csharp
-ITransactionService service = new QifService();
-ITransactionDetail result = service.QueryFromFile<NonInvestmentTransaction>(_path + "/export.qif");
+var qifService = new QifService(new QifReader(), new QifRepositoryContainer());
+var transactions = await qifService.QueryFromFileAsync<NonInvestmentTransaction>("PATH TO THE QIF FILE");
 ```
 
-    For more information check the unit test project folder.
+    For more information check the integration test project.
 
 ### Test
 
     dotnet test
 
 ### License
-Copyright (c) 2018 Ahmet Cavus  
+Copyright (c) 2021 Ahmet Cavus  
 Licensed under the MIT license.
+
+See the [LICENSE](./LICENSE) file to get more information.
