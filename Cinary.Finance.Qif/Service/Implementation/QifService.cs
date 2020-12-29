@@ -10,15 +10,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Cinary.Finance.Qif.Repository;
-using Cinary.Finance.Qif.Service;
+using Cinary.Finance.Qif.Service.Interface;
 using Cinary.Finance.Qif.Transaction;
 
 namespace Cinary.Finance.Qif
 {
-    public class QifService : ITransactionService
+    public class QifService : IQifService
     {
-        protected QifReader _qifReader = new QifReader();
-        protected QifRepositoryContainer _qifRepoLocator = new QifRepositoryContainer();
+        private IQifReader _qifReader;
+        private IQifRepositoryContainer _qifRepoLocator;
+
+        public QifService(IQifReader qifReader, IQifRepositoryContainer qifRepositoryConainer)
+        {
+            _qifReader = qifReader;
+            _qifRepoLocator = qifRepositoryConainer;
+        }
 
         public async Task<IList<ITransactionEntry>> QueryAsync<TTarget>(string id, Stream resource)
         where TTarget : class, ITransactionEntry
