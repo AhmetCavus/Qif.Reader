@@ -80,11 +80,15 @@ namespace Cinary.Finance.Qif
             _in.BaseStream.Position = 0;
 
             // Read header line
-            var header = await _in.ReadLineAsync();
+            string header = string.Empty;
+            do
+            {
+                header = await _in.ReadLineAsync();
+            } while (!IsHeaderValid(header));
 
             // Get transaction type
             var transactionType = string.Empty;
-            if (header.StartsWith("!Type:"))
+            if (IsHeaderValid(header))
             {
                 transactionType = header.Substring(6).ToUpper();
             }
@@ -130,5 +134,7 @@ namespace Cinary.Finance.Qif
             }
             return transactions;
         }
+
+        bool IsHeaderValid(string header) => header != null && header.StartsWith("!Type:");
     }
 }
