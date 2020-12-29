@@ -6,11 +6,8 @@
 //
 //  Copyright (c) 2017 (c) Ahmet Cavus
 
-using System.Collections.Generic;
 using Cinary.Finance.Qif.Data.Modifier.Implementation;
-using Cinary.Finance.Qif.Dto;
 using Cinary.Finance.Qif.Service;
-using Cinary.Finance.Qif.Transaction;
 using Cinary.Finance.Qif.TransactionTypes;
 
 namespace Cinary.Finance.Qif.Repository

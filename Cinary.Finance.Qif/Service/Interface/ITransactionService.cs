@@ -16,10 +16,6 @@ namespace Cinary.Finance.Qif.Service
 {
     public interface ITransactionService : IDisposable
     {
-        //Task<ITransactionDetail> QueryAsync<TTarget>(IDataDescription description = null) where TTarget : class, ITransaction;
-
-        //ITransactionDetail Query<TTarget>(IDataDescription description = null) where TTarget : class, ITransaction;
-
         Task<IList<ITransactionEntry>> QueryAsync<TTarget>(string id, Stream resource) where TTarget : class, ITransactionEntry;
 
         IList<ITransactionEntry> Query<TTarget>(string id, Stream resource) where TTarget : class, ITransactionEntry;
