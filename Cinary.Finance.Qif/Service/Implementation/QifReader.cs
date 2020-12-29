@@ -1,4 +1,5 @@
 ﻿using Cinary.Finance.Qif.Service;
+using Cinary.Finance.Qif.Service.Interface;
 using Cinary.Finance.Qif.Transaction;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cinary.Finance.Qif
 {
-    public class QifReader : ITransactionReader
+    public class QifReader : IQifReader
     {
         public async Task<IList<ITransactionEntry>> ReadFromResourceAsync<TTarget>(string resource) where TTarget : ITransactionEntry
         {

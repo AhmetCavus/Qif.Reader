@@ -1,5 +1,4 @@
-﻿using Cinary.Finance.Qif.Data;
-using Cinary.Finance.Qif.Transaction;
+﻿using Cinary.Finance.Qif.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace Cinary.Finance.Qif.Repository
 {
-    public abstract class AbstractQifRepositoryContainer : ITransactionRepositoryContainer
+    public abstract class AbstractQifRepositoryContainer : IQifRepositoryContainer
     {
         protected static Dictionary<string, AbstractTransactionRepository> _container = new Dictionary<string, AbstractTransactionRepository>();
 
