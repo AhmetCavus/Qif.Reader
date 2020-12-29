@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinary.Finance.Qif", "Cinary.Finance.Qif\Cinary.Finance.Qif.csproj", "{4C691479-862A-44E6-8499-B83FC61169FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinary.Finance.Qif.Test", "Cinary.Finance.Qif.Test\Cinary.Finance.Qif.Test.csproj", "{44DA180B-3196-4348-B8EA-0ECD402934D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinary.Finance.Qif.Test", "Cinary.Finance.Qif.Test\Cinary.Finance.Qif.Test.csproj", "{44DA180B-3196-4348-B8EA-0ECD402934D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinary.Finance.Qif.IntegrationTest", "Cinary.Finance.Qif.IntegrationTest\Cinary.Finance.Qif.IntegrationTest.csproj", "{FE827557-137E-46CD-AD5A-2141038755A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{44DA180B-3196-4348-B8EA-0ECD402934D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44DA180B-3196-4348-B8EA-0ECD402934D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44DA180B-3196-4348-B8EA-0ECD402934D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE827557-137E-46CD-AD5A-2141038755A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE827557-137E-46CD-AD5A-2141038755A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE827557-137E-46CD-AD5A-2141038755A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE827557-137E-46CD-AD5A-2141038755A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
