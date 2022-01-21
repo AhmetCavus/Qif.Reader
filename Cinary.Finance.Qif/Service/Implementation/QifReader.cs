@@ -27,14 +27,22 @@ namespace Cinary.Finance.Qif
 
         public async Task<IList<ITransactionEntry>> ReadFromFileAsync<TTarget>(string resource) where TTarget : ITransactionEntry
         {
-            Stream stream = File.OpenRead(resource);
-            return await ReadAsync<TTarget>(stream);
+            IList<ITransactionEntry> result;
+            using (var stream = File.OpenRead(resource))
+            {
+                result = await ReadAsync<TTarget>(stream);
+            }
+            return result;
         }
 
         public IList<ITransactionEntry> ReadFromFile<TTarget>(string resource) where TTarget : ITransactionEntry
         {
-            Stream stream = File.OpenRead(resource);
-            return Read<TTarget>(stream);
+            IList<ITransactionEntry> result;
+            using (var stream = File.OpenRead(resource))
+            {
+                result = Read<TTarget>(stream);
+            }
+            return result;
         }
 
         public async Task<IList<ITransactionEntry>> ReadAsync<TTarget>(Stream resource) where TTarget : ITransactionEntry

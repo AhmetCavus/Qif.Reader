@@ -17,8 +17,9 @@ Adding support for multiple accounts.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Locator\Implementation\" />
-    <Folder Include="Locator\Interface\" />
+    <Compile Remove="Locator\**" />
+    <EmbeddedResource Remove="Locator\**" />
+    <None Remove="Locator\**" />
   </ItemGroup>
 
 </Project>

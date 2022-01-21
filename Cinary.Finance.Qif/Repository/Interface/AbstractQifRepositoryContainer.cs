@@ -12,6 +12,7 @@ namespace Cinary.Finance.Qif.Repository
 
         public AbstractTransactionRepository Resolve(Type transactionType)
         {
+            if(_container.ContainsKey(transactionType.Name)) return _container[transactionType.Name];
             string resourceNameRepo = transactionType.Name.Replace("Model", "").Replace("Resource", "") + "Repository";
 
             AbstractTransactionRepository result = default(AbstractTransactionRepository);
@@ -36,7 +37,7 @@ namespace Cinary.Finance.Qif.Repository
                 }
                 catch (Exception err)
                 {
-                    System.Console.WriteLine(err);
+                    Console.WriteLine(err);
                     throw err;
                 }
                 _container.Add(transactionType.Name, result);

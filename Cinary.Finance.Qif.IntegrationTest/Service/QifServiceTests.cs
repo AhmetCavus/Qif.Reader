@@ -42,6 +42,20 @@ namespace Cinary.Finance.Qif.IntegrationTest.Service
             Assert.NotNull(transactions);
         }
 
+        [Test]
+        [Explicit("Depends on a qif file. This file had to be provided before executing this test")]
+        public void QifService_QueryFromFileTwice_DoesNotThrowException()
+        {
+            // Arrange
+
+            // Act && Assert
+            Assert.DoesNotThrowAsync(async () =>
+            {
+                var transactions1 = await _qifService.QueryFromFileAsync<NonInvestmentTransaction>(_qifFilePath);
+                var transactions2 = await _qifService.QueryFromFileAsync<NonInvestmentTransaction>(_qifFilePath);
+            });
+        }
+
 
     }
 }
