@@ -86,27 +86,25 @@ namespace Cinary.Finance.Qif
             _in.BaseStream.Position = 0;
 
             var transactions = new List<ITransactionEntry>();
+            var transactionType = string.Empty;
+
             while (!_in.EndOfStream)
             {
-                var transactionType = await ResolveTransactionType();
-
-                while (!_in.EndOfStream)
+                var line = string.Empty;
+                var transactionString = string.Empty;
+                while(!IsNextTransaction(line))
                 {
-                    var line = string.Empty;
-                    var transactionString = string.Empty;
-                    while(!IsNextTransaction(line) 
-                        && !IsNewTransactionType(line))
+                    line = await _in.ReadLineAsync();
+                    if(line.ToLowerInvariant().StartsWith("!type:"))
                     {
-                        line = await _in.ReadLineAsync();
+                        transactionType = await ResolveTransactionType(line);
+                        break;
+                    } else
+                    {
                         transactionString += line + Environment.NewLine;
                     }
-                    CreateAndAddTransaction(transactions, mapper, transactionType, transactionString);
-                    if (IsNewTransactionType(line))
-                    {
-                        _in.BaseStream.Position -= 1024;
-                        break;
-                    }
                 }
+                CreateAndAddTransaction(transactions, mapper, transactionType, transactionString);
             }
             return transactions;
         }
@@ -126,15 +124,8 @@ namespace Cinary.Finance.Qif
             return transaction;
         }
 
-        async Task<string> ResolveTransactionType()
+        async Task<string> ResolveTransactionType(string header)
         {
-            // Read header line
-            string header = string.Empty;
-            while (!IsHeaderValid(header) && !_in.EndOfStream)
-            {
-                header = await _in.ReadLineAsync();
-            }
-
             // Get transaction type
             var transactionType = string.Empty;
             if (IsHeaderValid(header))
@@ -169,10 +160,10 @@ namespace Cinary.Finance.Qif
             return (mapperClass, mapperName);
         }
 
-        bool IsHeaderValid(string header) => header != null && header.StartsWith("!Type:");
+        bool IsHeaderValid(string header) => header != null && header.ToLowerInvariant().StartsWith("!type:");
 
         bool IsNextTransaction(string line) => line.StartsWith("^");
 
-        bool IsNewTransactionType(string line) => line.StartsWith("!Type:");
+        bool IsNewTransactionType(string line) => line.ToLowerInvariant().StartsWith("!type:");
     }
 }
