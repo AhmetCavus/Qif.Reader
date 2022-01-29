@@ -111,8 +111,9 @@ namespace Cinary.Finance.Qif
 
         void CreateAndAddTransaction<TType>(IList<ITransactionEntry> transactions, TransactionMap<TType> mapper, string transactionType, string transactionString) where TType : ITransactionEntry
         {
-            if (transactionString.StartsWith("!")) return;
+            if (string.IsNullOrEmpty(transactionString) || transactionString.StartsWith("!")) return;
             var transactionToAdd = CreateTransaction(mapper, transactionType, transactionString);
+            if (string.IsNullOrEmpty(transactionToAdd.PayeeAccount) && transactionToAdd.Date <= DateTime.MinValue) return;
             transactions.Add((TType)Convert.ChangeType(transactionToAdd, typeof(TType)));
         }
 
