@@ -12,6 +12,7 @@ namespace Cinary.Finance.Qif
     internal class QifStream
     {
         private StreamReader _in;
+        private string[] _transactionTypesToIgnore = { "cat", "class" };
 
         public QifStream(StreamReader stream)
         {
@@ -104,6 +105,8 @@ namespace Cinary.Finance.Qif
                         transactionString += line + Environment.NewLine;
                     }
                 }
+                var normalizedTransactionType = transactionType.ToLowerInvariant();
+                if (_transactionTypesToIgnore.Contains(normalizedTransactionType)) continue;
                 CreateAndAddTransaction(transactions, mapper, transactionType, transactionString);
             }
             return transactions;
@@ -119,7 +122,7 @@ namespace Cinary.Finance.Qif
 
         TType CreateTransaction<TType>(TransactionMap<TType> mapper, string transactionType, string transactionString) where TType : ITransactionEntry
         {
-            // Parse, map and add to listi
+            // Parse, map and add to list
             var transaction = mapper.Parse<TType>(transactionString);
             transaction.Type = transactionType;
             return transaction;
