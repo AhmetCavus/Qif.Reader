@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/AhmetCavus/Qif.Reader.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Finance Qif Reader Parser</PackageTags>
-    <Version>1.4.1.0</Version>
+    <Version>1.4.2.0</Version>
     <PackageReleaseNotes>Enhanced the parser logic due to read failures of most common qif files.
 Adding support for multiple accounts.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
