@@ -9,9 +9,35 @@ using System.Reflection;
 
 namespace Cinary.Finance.Qif.TransactionMapping
 {
-    internal class TransactionMap<T> :  IStringMapper<T> where T : ITransactionEntry
+    internal class TransactionMap<T> : IStringMapper<T> where T : ITransactionEntry
     {
         private IList<TransactionAttribute> _attributes;
+        private string[] _dateFormats = {
+                                    "d.M.yyyy", // 01.01.2025
+                                    "M.d.yyyy", // 01.01.2025
+                                    "M.d.yy",   // 01.01.25 -> assumes 21st century (01.01.2025)
+                                    "MM.dd.yyyy", // 01.01.2025
+                                    "MM.dd.yy",   // 01.01.25 -> assumes 21st century (01.01.2025)
+                                    "d.MM.yyyy", // 1.01.2025
+                                    "d.M.yy",   // 01.01.25 -> assumes 21st century (01.01.2025)
+                                    "dd.MM.yyyy", // 01.01.2025
+                                    "dd.MM.yy",   // 01.01.25 -> assumes 21st century (01.01.2025)
+                                    "MM/dd/yyyy", // 01/01/2025 (US-style)
+                                    "MM/dd/yy",   // 01/01/25 -> assumes 21st century (01/01/2025)
+                                    "dd/MM/yyyy", // 01/01/2025 (European-style)
+                                    "dd/MM/yy",   // 25/01/01 -> assumes 21st century (01/25/2001)
+                                    "d/MM/yyyy",// 01/Jan/2025
+                                    "d/MM/yy",  // 01/Jan/25
+                                    "yy/MM/dd",    // 25/01/01 (could be reversed, depending on file source)
+                                    "dd-MMM-yy",  // 01-Jan-25
+                                    "dd-MMM-yyyy",// 01-Jan-2025
+                                    "dd-MMM",     // 01-Jan -> assumes current year
+                                    "MMM-yy",     // Jan-25 -> assumes current day and year
+                                    "MMM-yyyy",   // Jan-2025 -> assumes current day
+                                    "yyyy-MM-dd", // 2025-01-01
+                                    "yyyy-MM",    // 2025-01 -> assumes 1st day of month
+                                    "yyyy"        // 2025 -> assumes 1st day of year
+                                };
 
         public TransactionMap()
         {
@@ -20,7 +46,7 @@ namespace Cinary.Finance.Qif.TransactionMapping
 
         internal void AddAttribute(char key, string propertyName)
         {
-            this._attributes.Add(new TransactionAttribute(key, propertyName) );
+            this._attributes.Add(new TransactionAttribute(key, propertyName));
         }
 
         internal TransactionAttribute GetAttribute(char key)
@@ -37,69 +63,87 @@ namespace Cinary.Finance.Qif.TransactionMapping
             {
                 // Get first character as key, the rest as value
                 var key = item[0];
-                var value = item.Substring(1);
+                var dataValue = item.Substring(1);
 
                 // Get the attribute
                 var attribute = GetAttribute(key);
 
                 if (attribute != null)
                 {
-                    // Using Reflection to set the property
-                    PropertyInfo propertyInfo = transaction.GetType().GetRuntimeProperty(attribute.PropertyName);
-                    // TODO: find a better way to do this
+                    fillTransactionWithBasicType(transaction, attribute, dataValue);
 
-                    try
-                    {
-                        switch (propertyInfo.PropertyType.ToString())
-                        {
-                            case "System.Collections.Generic.IList`1[System.String]":
-                                var slist = propertyInfo.GetValue(transaction);
-                                if (slist == null)
-                                    slist = new List<string>();
-                                ((IList<string>)slist).Add(value);
-                                break;
-
-                            case "System.Collections.Generic.IList`1[System.Decimal]":
-                                var dlist = propertyInfo.GetValue(transaction);
-                                if (dlist == null)
-                                    dlist = new List<decimal>();
-                                ((IList<decimal>)dlist).Add(decimal.Parse(value, CultureInfo.InvariantCulture));
-                                break;
-
-                            case "System.Decimal":
-                                var dec = decimal.Parse(value, CultureInfo.InvariantCulture);
-                                propertyInfo.SetValue(transaction, Convert.ChangeType(dec, propertyInfo.PropertyType));
-                                break;
-
-                            case "System.Int32":
-                                var num = int.Parse(value);
-                                propertyInfo.SetValue(transaction, Convert.ChangeType(num, propertyInfo.PropertyType));
-                                break;
-
-                            case "System.DateTime":
-                                var date = DateTime.Parse(value, CultureInfo.InvariantCulture);
-                                propertyInfo.SetValue(transaction, Convert.ChangeType(date, propertyInfo.PropertyType));
-                                break;
-
-                            case "System.String":
-                                propertyInfo.SetValue(transaction, Convert.ChangeType(value, propertyInfo.PropertyType));
-                                break;
-
-                            case "System.Boolean":
-                                var flag = false;
-                                if (value.ToUpper() == "X")
-                                    flag = true;
-                                propertyInfo.SetValue(transaction, Convert.ChangeType(flag, propertyInfo.PropertyType));
-                                break;
-
-                        }
-                    } catch(Exception err)
-                    {
-                        Debug.WriteLine(err);
-                    }
                 }
             }
             return transaction;
+        }
+
+        private void fillTransactionWithBasicType<T1>(T1 transaction, TransactionAttribute attribute, string dataValue) where T1 : ITransactionEntry
+        {
+            // Using Reflection to set the property
+            PropertyInfo propertyInfo = transaction.GetType().GetRuntimeProperty(attribute.PropertyName);
+            // TODO: find a better way to do this
+            switch (propertyInfo.PropertyType.Name)
+            {
+                case "Decimal":
+                    var dec = decimal.Parse(dataValue, CultureInfo.InvariantCulture);
+                    propertyInfo.SetValue(transaction, Convert.ChangeType(dec, propertyInfo.PropertyType));
+                    break;
+
+                case "Int32":
+                    var num = int.Parse(dataValue);
+                    propertyInfo.SetValue(transaction, Convert.ChangeType(num, propertyInfo.PropertyType));
+                    break;
+
+                case "DateTime":
+                    try
+                    {
+                        var date = DateTime.ParseExact(dataValue, _dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        propertyInfo.SetValue(transaction, Convert.ChangeType(date, propertyInfo.PropertyType));
+                    }
+                    catch (FormatException)
+                    {
+                        var date = DateTime.Parse(dataValue, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        propertyInfo.SetValue(transaction, Convert.ChangeType(date, propertyInfo.PropertyType));
+                    }
+                    break;
+
+                case "String":
+                    propertyInfo.SetValue(transaction, Convert.ChangeType(dataValue, propertyInfo.PropertyType));
+                    break;
+
+                case "Boolean":
+                    var flag = false;
+                    var normalizedData = dataValue.ToLowerInvariant();
+                    if (normalizedData == "x" || dataValue == "true" || dataValue == "1")
+                        flag = true;
+                    propertyInfo.SetValue(transaction, Convert.ChangeType(flag, propertyInfo.PropertyType));
+                    break;
+                default:
+                    fillTransactionWithComplexType(transaction, propertyInfo, dataValue);
+                    break;
+            }
+        }
+
+        private void fillTransactionWithComplexType<T1>(T1 transaction, PropertyInfo propertyInfo, string dataValue) where T1 : ITransactionEntry
+        {
+            switch (propertyInfo.PropertyType.ToString())
+            {
+                case "System.Collections.Generic.IList`1[System.String]":
+                    var slist = propertyInfo.GetValue(transaction);
+                    if (slist == null)
+                        slist = new List<string>();
+                    ((IList<string>)slist).Add(dataValue);
+                    break;
+                case "System.Collections.Generic.IList`1[System.Decimal]":
+                    var dlist = propertyInfo.GetValue(transaction);
+                    if (dlist == null)
+                        dlist = new List<decimal>();
+                    ((IList<decimal>)dlist).Add(decimal.Parse(dataValue, CultureInfo.InvariantCulture));
+                    break;
+                default:
+                    Debug.WriteLine("Property type not supported: " + propertyInfo.PropertyType.ToString());
+                    break;
+            }
         }
     }
 }
