@@ -1,9 +1,8 @@
-﻿using Cinary.Finance.Qif.Repository;
+using Cinary.Finance.Qif.Repository;
 using Cinary.Finance.Qif.Service.Interface;
 using Cinary.Finance.Qif.TransactionTypes;
 using NUnit.Framework;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Cinary.Finance.Qif.IntegrationTest.Service

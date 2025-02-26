@@ -98,7 +98,7 @@ namespace Cinary.Finance.Qif
                     line = await _in.ReadLineAsync();
                     if(line.ToLowerInvariant().StartsWith("!type:"))
                     {
-                        transactionType = await ResolveTransactionType(line);
+                        transactionType = ResolveTransactionType(line);
                         break;
                     } else
                     {
@@ -106,6 +106,7 @@ namespace Cinary.Finance.Qif
                     }
                 }
                 var normalizedTransactionType = transactionType.ToLowerInvariant();
+                if (string.IsNullOrEmpty(transactionType)) continue;
                 if (_transactionTypesToIgnore.Contains(normalizedTransactionType)) continue;
                 CreateAndAddTransaction(transactions, mapper, transactionType, transactionString);
             }
@@ -128,7 +129,7 @@ namespace Cinary.Finance.Qif
             return transaction;
         }
 
-        async Task<string> ResolveTransactionType(string header)
+        string ResolveTransactionType(string header)
         {
             // Get transaction type
             var transactionType = string.Empty;
